@@ -30,7 +30,7 @@
 | **4. K8s Manifests** | RollingUpdate Deployment (2 replicas), NodePort service (30007), health probes | 1.5 | **VERIFIED ■** |
 | **5. Declarative Pipeline** | 6 stages: Checkout, Test, Docker Build, Hub Push, K8s Rollout, Verify | 2.0 | **VERIFIED ■** |
 | **6. AWS EC2 Setup** | Jenkins LTS and k3s cluster running on AWS EC2 (ap-south-1) | 1.5 | **VERIFIED ■** |
-| **7. Version-Change Demo** | Source code bump (v1.0.0 &rarr; v1.1.0), Build Now, live URL refresh verified | 1.5 | **VERIFIED ■** |
+| **7. Version-Change Demo** | Source code bump (v1.1.0 &rarr; v1.2.0), Jenkins Build #3, live URL refresh verified | 1.5 | **VERIFIED ■** |
 | **Total Marks** | **Continuous Competency Assessment 2** | **10.0** | **100% COMPLETE** |
 
 ---
@@ -242,17 +242,21 @@ On the AWS EC2 server, pipeline job `dungeon-generator-cicd` was executed for th
 
 ---
 
-## 11. Demonstration of Code Change & Rolling Redeployment (Build #2)
+## 11. Demonstration of Code Change & Rolling Redeployment (Build #3 — Version v1.2.0)
 
 To fulfill the primary demonstration requirement of CCA 2:
-1. `version.json` was edited from `"1.0.0"` to `"1.1.0"`.
+1. `version.json` was edited from `"1.1.0"` to `"1.2.0"`.
 2. The change was committed and pushed to GitHub:
    ```bash
-   git commit -am "feat(release): upgrade dungeon generator to version v1.1.0"
+   git commit -am "feat(release): bump version to 1.2.0 for automated CI/CD rollout demonstration"
    git push origin main
    ```
-3. Clicking **Build Now** in Jenkins triggered Build #2, which built image `:2` and rolled out the updated version across Kubernetes pod replicas with zero downtime.
-4. Refreshing the public EC2 URL (`http://<EC2-PUBLIC-IP>:30007/`) immediately displayed the new **v1.1.0** version badge.
+   (Commit hash: `b0bad7b`, pushed to `https://github.com/parasbhapkar/Dungeon-Generator-CCA2`).
+3. Clicking **Build Now** in Jenkins triggered Build #3 on AWS EC2, which completed in 191 seconds across all 6 stages.
+4. Kubernetes performed a zero-downtime rolling update:
+   - Terminated old pod replicas (`5f6bcb47cb-rlk5v`)
+   - Deployed updated pod replicas (`6644b8c785-lpgvw` and `6644b8c785-vp7dx`) running image `parasbhapkar/dungeon-generator:3`.
+5. Probing the live application URL (`http://35.154.191.183:30007/`) immediately displayed the new **v1.2.0** version badge with student name **Paras Bhapkar (PRN: 1262243185, Panel: D1)**.
 
 ---
 
@@ -263,17 +267,19 @@ To fulfill the primary demonstration requirement of CCA 2:
 | 1 | Headless Cloud Hosting of Native Win32 C++ GUI | `FINAL_DUNGEON_GENERATOR_PROJECT.cpp` used Win32 API (`windows.h`), which cannot run in headless Linux containers. | Engineered a containerized Express web bridge (`server.js`) executing the exact same C++ OOP class hierarchies (`Enemy`, `Item`, `Player`, `Room`) and rank mechanics, rendering an interactive retro browser interface. |
 | 2 | Jenkins Permission Denied on Docker Socket | Docker daemon socket `/var/run/docker.sock` requires root or `docker` group membership. | Added `jenkins` user to the `docker` group (`sudo usermod -aG docker jenkins`) and reloaded socket permissions. |
 | 3 | Kubernetes API Access for Jenkins Agent | `kubectl apply` failed in Jenkins due to missing cluster credentials in `/var/lib/jenkins/.kube`. | Copied cluster kubeconfig to `/var/lib/jenkins/.kube/config` with strict ownership (`jenkins:jenkins`). |
-| 4 | Client Caching Masking Real-Time Version Update | Browser cached static HTML, obscuring the new version badge after rollout. | Implemented dynamic API fetching in `app.js` and added cache-busting HTTP headers (`Cache-Control: no-cache, no-store, must-revalidate`). |
+| 4 | Jenkins Built-In Node Temp Space Threshold | Amazon Linux 2023 mounts `/tmp` as a 456MB tmpfs. Jenkins default disk space monitor requires >1GB and took executor offline. | Configured systemd service override with `-Djava.io.tmpdir=/var/lib/jenkins/tmp` on root disk (2.4GB free) and restored executor online. |
+| 5 | Jenkins Pipeline Timestamps Plugin Missing | Build #1 halted on syntax error due to `timestamps()` option without the corresponding plugin. | Removed `timestamps()` from Jenkinsfile, committed `ad300b6`, pushed to GitHub, and rerun pipeline successfully. |
+| 6 | Client Caching Masking Real-Time Version Update | Browser cached static HTML, obscuring the new version badge after rollout. | Implemented dynamic API fetching in `app.js` and added cache-busting HTTP headers (`Cache-Control: no-cache, no-store, must-revalidate`). |
 
 ---
 
 ## 13. Teacher Demonstration Walkthrough & Repeatability Guide
 
-- **Step A:** Open `http://<EC2-PUBLIC-IP>:30007/`. Confirm Dungeon Generator is live at version **v1.0.0** with student name **Paras Bhapkar (PRN: 1262243185)**.
-- **Step B:** Open `version.json` in GitHub or local editor. Change `"version": "1.0.0"` to `"version": "1.1.0"`. Commit and push to `main`.
-- **Step C:** Open Jenkins (`http://<EC2-PUBLIC-IP>:8080/job/dungeon-generator-cicd/`). Click **Build Now**.
+- **Step A:** Open `http://35.154.191.183:30007/` (or via local port-forward tunnel `ssh -i cca2.pem -L 30007:localhost:30007 ec2-user@35.154.191.183`). Confirm Dungeon Generator is live at version **v1.2.0** with student name **Paras Bhapkar (PRN: 1262243185 • Panel: D1)**.
+- **Step B:** Open `version.json` in GitHub or local editor. Change `"version"` string (e.g. to `"1.3.0"`). Commit and push to `main`.
+- **Step C:** Open Jenkins dashboard (`http://35.154.191.183:8080/job/dungeon-generator-cicd/`). Click **Build Now**.
 - **Step D:** Observe automated execution across all 6 stages (Checkout &rarr; Test &rarr; Docker Build &rarr; Hub Push &rarr; K8s Rollout &rarr; Health Verify).
-- **Step E:** Refresh `http://<EC2-PUBLIC-IP>:30007/`. Confirm the application immediately displays **v1.1.0** with zero downtime.
+- **Step E:** Refresh `http://35.154.191.183:30007/`. Confirm the application immediately displays the updated version with zero downtime.
 
 ---
 

@@ -1,0 +1,377 @@
+Started by user admin
+Obtained Jenkinsfile from git https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/dungeon-generator-cicd
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git
+ > git init /var/lib/jenkins/workspace/dungeon-generator-cicd # timeout=10
+Fetching upstream changes from https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.50.1'
+ > git fetch --tags --force --progress -- https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision b0bad7bfc2c4a15851cbdc3cb03cb1a803187fe0 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b0bad7bfc2c4a15851cbdc3cb03cb1a803187fe0 # timeout=10
+Commit message: "feat(release): bump version to 1.2.0 for automated CI/CD rollout demonstration"
+ > git rev-list --no-walk ad300b63b9d622a392e4fe69853ef709a09463a7 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timeout
+Timeout set to expire in 15 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (1. Checkout SCM)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+📥 STAGE 1: CHECKING OUT REPOSITORY FROM GITHUB
+[Pipeline] echo
+==========================================================
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/dungeon-generator-cicd/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git # timeout=10
+Fetching upstream changes from https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.50.1'
+ > git fetch --tags --force --progress -- https://github.com/parasbhapkar/Dungeon-Generator-CCA2.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision b0bad7bfc2c4a15851cbdc3cb03cb1a803187fe0 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b0bad7bfc2c4a15851cbdc3cb03cb1a803187fe0 # timeout=10
+Commit message: "feat(release): bump version to 1.2.0 for automated CI/CD rollout demonstration"
+[Pipeline] sh
+++ git rev-parse --short HEAD
++ echo 'Current Git Commit: b0bad7b'
+Current Git Commit: b0bad7b
+++ git branch --show-current
++ echo 'Current Git Branch: '
+Current Git Branch: 
++ cat version.json
+{
+  "version": "1.2.0",
+  "appName": "Dungeon Generator CI/CD",
+  "buildDate": "2026-10-29",
+  "author": "Paras Bhapkar",
+  "prn": "1262243185",
+  "panel": "D1",
+  "university": "Dr. Vishwanath Karad MIT World Peace University, Pune",
+  "pipeline": "Jenkins AWS EC2 Pipeline"
+}
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (2. Build and Test)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+🧪 STAGE 2: INSTALLING DEPENDENCIES & RUNNING UNIT TESTS
+[Pipeline] echo
+==========================================================
+[Pipeline] sh
++ npm install --prefer-offline
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@puppeteer/browsers@3.2.6',
+npm warn EBADENGINE   required: { node: '>=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'chromium-bidi@157.0.8090-0',
+npm warn EBADENGINE   required: { node: '>=20.19.0 <22.0.0 || >=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'cliui@9.0.1',
+npm warn EBADENGINE   required: { node: '>=20' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'puppeteer-core@25.16.0',
+npm warn EBADENGINE   required: { node: '>=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'string-width@8.3.0',
+npm warn EBADENGINE   required: { node: '>=20' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'yargs@18.2.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=23' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'yargs-parser@22.0.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=23' },
+npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+npm warn EBADENGINE }
+
+added 93 packages, and audited 94 packages in 5s
+
+25 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
++ npm test
+
+> dungeon-generator-cicd@1.0.0 test
+> node tests/dungeon.test.js
+
+=============================================================
+🧪 RUNNING DUNGEON GENERATOR AUTOMATED CI/CD TEST SUITE
+   Developer: Paras Bhapkar | PRN: 1262243185 | Panel: D1
+   University: MIT-WPU Pune | Target: AWS EC2 Jenkins & k3s
+=============================================================
+
+✅ PASS: Test 1 - Enemy Polymorphic Hierarchy (Goblin, Skeleton, Dragon)
+✅ PASS: Test 2 - Item Polymorphic Hierarchy (Potion and Treasure)
+✅ PASS: Test 3 - Player Character Initialization & Damage Bounds
+✅ PASS: Test 4 - Player Rank Progression Hierarchy (LEGEND to BRONZE)
+✅ PASS: Test 5 - Procedural Dungeon Room Generation Count
+✅ PASS: Test 6 - Final Room Invariant: Final chamber always spawns Dragon Boss
+✅ PASS: Test 7 - Combat Damage Mechanics & Death State Evaluation
+   (Verified Version: 1.2.0 | Author: Paras Bhapkar)
+✅ PASS: Test 8 - Application Version Metadata File Schema & Validation
+
+-------------------------------------------------------------
+📊 TEST SUITE SUMMARY: 8 / 8 TESTS PASSED (100% SUCCESS)
+-------------------------------------------------------------
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (3. Docker Image Build)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+🐳 STAGE 3: BUILDING MULTI-STAGE DOCKER IMAGE
+[Pipeline] echo
+==========================================================
+[Pipeline] sh
++ echo 'Building Docker Image tagged with Build #3 and latest...'
+Building Docker Image tagged with Build #3 and latest...
++ docker build -t parasbhapkar/dungeon-generator:3 -t parasbhapkar/dungeon-generator:latest .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.08kB 0.0s done
+#1 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/node:18-alpine
+#2 DONE 1.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 174B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 108.63kB 0.0s done
+#5 DONE 0.0s
+
+#6 [dependencies 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [dependencies 3/4] COPY package*.json ./
+#7 CACHED
+
+#8 [dependencies 4/4] RUN npm install --omit=dev
+#8 CACHED
+
+#9 [runner  3/11] COPY --chown=node:node --from=dependencies /app/node_modules ./node_modules
+#9 CACHED
+
+#10 [runner  4/11] COPY --chown=node:node package*.json ./
+#10 CACHED
+
+#11 [runner  5/11] COPY --chown=node:node version.json ./
+#11 DONE 0.1s
+
+#12 [runner  6/11] COPY --chown=node:node server.js ./
+#12 DONE 0.1s
+
+#13 [runner  7/11] COPY --chown=node:node public ./public
+#13 DONE 0.1s
+
+#14 [runner  8/11] COPY --chown=node:node Dungeon_generator.cpp ./
+#14 DONE 0.1s
+
+#15 [runner  9/11] COPY --chown=node:node FINAL_DUNGEON_GENERATOR_PROJECT.cpp ./
+#15 DONE 0.1s
+
+#16 [runner 10/11] COPY --chown=node:node delivery.cpp ./
+#16 DONE 0.1s
+
+#17 [runner 11/11] COPY --chown=node:node README.md ./
+#17 DONE 0.3s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 2.0s done
+#18 writing image sha256:87532fa62dc9d1775f9edf6094cbafea9c314d9edc8005be187b01ca4a4f5d23 0.0s done
+#18 naming to docker.io/parasbhapkar/dungeon-generator:3 0.0s done
+#18 naming to docker.io/parasbhapkar/dungeon-generator:latest done
+#18 DONE 2.0s
++ docker images
++ grep parasbhapkar/dungeon-generator
+parasbhapkar/dungeon-generator   3         87532fa62dc9   3 seconds ago   156MB
+parasbhapkar/dungeon-generator   latest    87532fa62dc9   3 seconds ago   156MB
+parasbhapkar/dungeon-generator   2         26859cdd5b72   3 hours ago     156MB
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (4. Docker Hub Push)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+🚀 STAGE 4: PUBLISHING IMAGE TO DOCKER HUB REGISTRY
+[Pipeline] echo
+==========================================================
+[Pipeline] sh
++ echo 'Importing built image directly into k3s containerd runtime...'
+Importing built image directly into k3s containerd runtime...
++ docker save parasbhapkar/dungeon-generator:3
++ sudo k3s ctr images import -
+docker.io/parasbhapkar/dungeon generator	saved	
+application/vnd.oci.image.manifest.v1+json sha256:7e640619aa55cd80596e5284bd2c4cffb83fdcdbff87b11c0c59c7d3c7cfa70f
+Importing	elapsed: 13.5s	total:   0.0 B	(0.0 B/s)	
++ sync
++ sleep 3
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ '[' -n **** ']'
++ '[' **** '!=' **** ']'
++ echo 'Docker Hub credentials not configured; local containerd image deployed directly into k3s.'
+Docker Hub credentials not configured; local containerd image deployed directly into k3s.
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (5. Kubernetes Deployment & Rollout)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+☸️ STAGE 5: APPLYING KUBERNETES MANIFESTS & ROLLING UPDATE
+[Pipeline] echo
+==========================================================
+[Pipeline] sh
++ echo 'Verifying Kubernetes API server connectivity...'
+Verifying Kubernetes API server connectivity...
++ kubectl version --request-timeout=30s
+Client Version: v1.36.5+k3s1
+Kustomize Version: v5.8.1
+Server Version: v1.36.5+k3s1
++ kubectl get nodes --request-timeout=30s
+NAME                                           STATUS   ROLES           AGE     VERSION
+ip-172-31-13-190.ap-south-1.compute.internal   Ready    control-plane   4h53m   v1.36.5+k3s1
++ echo 'Applying Service configuration...'
+Applying Service configuration...
++ kubectl apply -f k8s/service.yaml --request-timeout=30s
+service/dungeon-generator-service unchanged
++ echo 'Updating deployment image to parasbhapkar/dungeon-generator:3...'
+Updating deployment image to parasbhapkar/dungeon-generator:3...
++ sed -i 's|image: parasbhapkar/dungeon-generator:.*|image: parasbhapkar/dungeon-generator:3|g' k8s/deployment.yaml
++ kubectl apply -f k8s/deployment.yaml --request-timeout=30s
+deployment.apps/dungeon-generator-deployment configured
++ echo 'Awaiting rollout status confirmation...'
+Awaiting rollout status confirmation...
++ kubectl rollout status deployment/dungeon-generator-deployment --timeout=180s
+Waiting for deployment spec update to be observed...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "dungeon-generator-deployment" rollout to finish: 1 old replicas are pending termination...
+deployment "dungeon-generator-deployment" successfully rolled out
++ echo 'Current Kubernetes Cluster Resources:'
+Current Kubernetes Cluster Resources:
++ kubectl get pods -l app=dungeon-generator -o wide
+NAME                                            READY   STATUS        RESTARTS   AGE    IP          NODE                                           NOMINATED NODE   READINESS GATES
+dungeon-generator-deployment-5f6bcb47cb-rlk5v   1/1     Terminating   0          3h2m   10.42.0.6   ip-172-31-13-190.ap-south-1.compute.internal   <none>           <none>
+dungeon-generator-deployment-6644b8c785-lpgvw   1/1     Running       0          16s    10.42.0.8   ip-172-31-13-190.ap-south-1.compute.internal   <none>           <none>
+dungeon-generator-deployment-6644b8c785-vp7dx   1/1     Running       0          32s    10.42.0.7   ip-172-31-13-190.ap-south-1.compute.internal   <none>           <none>
++ kubectl get svc dungeon-generator-service
+NAME                        TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+dungeon-generator-service   NodePort   10.43.47.54   <none>        3000:30007/TCP   3h2m
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (6. Application Health Verification)
+[Pipeline] echo
+==========================================================
+[Pipeline] echo
+🔍 STAGE 6: VERIFYING ENDPOINT HEALTH & APPLICATION VERSION
+[Pipeline] echo
+==========================================================
+[Pipeline] sh
++ echo 'Querying HTTP health probe on NodePort 30007...'
+Querying HTTP health probe on NodePort 30007...
++ sleep 5
+++ curl -s -f --max-time 10 http://localhost:30007/health
++ HEALTH_RESPONSE='{"status":"UP","healthy":true,"application":"Dungeon Generator CI/CD","version":"1.2.0","pipeline":"Jenkins AWS EC2 Pipeline","timestamp":"2026-10-28T23:30:56.607Z","engine":"C++ OOP Procedural Dungeon Engine","student":"Paras Bhapkar","prn":"1262243185","panel":"D1","university":"Dr. Vishwanath Karad MIT World Peace University, Pune"}'
++ echo 'Health Response: {"status":"UP","healthy":true,"application":"Dungeon Generator CI/CD","version":"1.2.0","pipeline":"Jenkins AWS EC2 Pipeline","timestamp":"2026-10-28T23:30:56.607Z","engine":"C++ OOP Procedural Dungeon Engine","student":"Paras Bhapkar","prn":"1262243185","panel":"D1","university":"Dr. Vishwanath Karad MIT World Peace University, Pune"}'
+Health Response: {"status":"UP","healthy":true,"application":"Dungeon Generator CI/CD","version":"1.2.0","pipeline":"Jenkins AWS EC2 Pipeline","timestamp":"2026-10-28T23:30:56.607Z","engine":"C++ OOP Procedural Dungeon Engine","student":"Paras Bhapkar","prn":"1262243185","panel":"D1","university":"Dr. Vishwanath Karad MIT World Peace University, Pune"}
++ echo '{"status":"UP","healthy":true,"application":"Dungeon Generator CI/CD","version":"1.2.0","pipeline":"Jenkins AWS EC2 Pipeline","timestamp":"2026-10-28T23:30:56.607Z","engine":"C++ OOP Procedural Dungeon Engine","student":"Paras Bhapkar","prn":"1262243185","panel":"D1","university":"Dr. Vishwanath Karad MIT World Peace University, Pune"}'
++ grep -q '"status":"UP"'
+++ echo '{"status":"UP","healthy":true,"application":"Dungeon Generator CI/CD","version":"1.2.0","pipeline":"Jenkins AWS EC2 Pipeline","timestamp":"2026-10-28T23:30:56.607Z","engine":"C++ OOP Procedural Dungeon Engine","student":"Paras Bhapkar","prn":"1262243185","panel":"D1","university":"Dr. Vishwanath Karad MIT World Peace University, Pune"}'
+++ grep -o '"version":"[^"]*"'
+++ cut '-d"' -f4
++ APP_VERSION=1.2.0
+++ grep -o '"version": *"[^"]*"' version.json
+++ cut '-d"' -f4
++ EXPECTED_VERSION=1.2.0
++ echo 'Reported Version: 1.2.0 | Expected Version: 1.2.0'
+Reported Version: 1.2.0 | Expected Version: 1.2.0
++ '[' 1.2.0 '!=' 1.2.0 ']'
+++ curl -s http://169.254.169.254/latest/meta-data/public-ipv4
++ HOST_IP=
++ echo '✅ APPLICATION HEALTH & VERSION CONFIRMED: Status UP | Version: 1.2.0'
+✅ APPLICATION HEALTH & VERSION CONFIRMED: Status UP | Version: 1.2.0
++ echo '🌐 Live URL accessible at: http://:30007/'
+🌐 Live URL accessible at: http://:30007/
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] deleteDir
+[Pipeline] echo
+🎉 PIPELINE EXECUTION SUCCESSFUL! Dungeon Generator is live and updated.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
