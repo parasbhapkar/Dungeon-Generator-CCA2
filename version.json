@@ -1,0 +1,10 @@
+{
+  "version": "1.1.0",
+  "appName": "Dungeon Generator CI/CD",
+  "buildDate": "2026-10-28",
+  "author": "Paras Bhapkar",
+  "prn": "1262243185",
+  "panel": "D1",
+  "university": "Dr. Vishwanath Karad MIT World Peace University, Pune",
+  "pipeline": "Jenkins AWS EC2 Pipeline"
+}
