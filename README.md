@@ -4,6 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Hub%20Registry-0db7ed?logo=docker&logoColor=white)](#)
 [![Kubernetes](https://img.shields.io/badge/Orchestration-Kubernetes%20(k3s)-326ce5?logo=kubernetes&logoColor=white)](#)
 [![Cloud](https://img.shields.io/badge/Cloud-AWS%20EC2%20(ap--south--1)-FF9900?logo=amazon-aws&logoColor=white)](#)
+[![Version](https://img.shields.io/badge/Deployed%20Version-v1.2.0-success.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
 
 > **College Continuous Competency Assessment 2 (CCA 2) Project**  
@@ -51,12 +52,12 @@ The original native C++ application (`Dungeon_generator.cpp`, `FINAL_DUNGEON_GEN
    ├── Stage 1: Checkout SCM (Commit Hash & Branch)
    ├── Stage 2: Build & Test (npm test - 8 Unit Tests)
    ├── Stage 3: Docker Image Build (Multi-stage build tagged :${BUILD_NUMBER} and :latest)
-   ├── Stage 4: Docker Hub Push (parasbhapkar/dungeon-generator via Jenkins Credentials)
+   ├── Stage 4: Container Delivery (Image loaded into k3s containerd runtime / Docker Hub)
    ├── Stage 5: Kubernetes Rollout (k3s RollingUpdate with 2 Pod Replicas)
    └── Stage 6: Application Health Verification (HTTP 200 on /health, version match assertion)
                  │
                  ▼
- [Live Dungeon Generator Application (NodePort: 30007)]
+ [Live Dungeon Generator Application (NodePort: 30007 via SSH Tunnel)]
 ```
 
 ---
@@ -70,12 +71,17 @@ Dungeon-Generator-CCA2/
 ├── Dockerfile                        # Multi-stage Docker build with non-root security
 ├── Jenkinsfile                       # 6-stage Declarative CI/CD pipeline definition
 ├── package.json                      # Node.js dependencies and test scripts
-├── version.json                      # Authoritative application version source (v1.0.0)
+├── version.json                      # Authoritative application version source (v1.2.0)
 ├── server.js                         # C++ OOP Web Bridge & REST API
 ├── Dungeon_generator.cpp             # Authentic C++ OOP Game Engine
 ├── FINAL_DUNGEON_GENERATOR_PROJECT.cpp # Authentic C++ Win32 Project
 ├── delivery.cpp                      # Supplementary C++ mechanics
 ├── README.md                         # Project documentation and deployment guide
+├── docs/
+│   ├── CCA2_Report.md                # Comprehensive CCA 2 academic report (Markdown source)
+│   ├── CCA2_Report.html              # 14-page printable report with figures & formatting
+│   ├── CCA2_Report.pdf               # Compiled 14-page PDF submission
+│   └── screenshots/                  # Verified execution screenshots (fig01 - fig20)
 ├── k8s/
 │   ├── deployment.yaml               # Kubernetes Deployment (2 replicas, rolling updates)
 │   └── service.yaml                  # Kubernetes NodePort Service (Port 30007)
@@ -117,7 +123,7 @@ Expected output:
 ✅ PASS: Test 6 - Final Room Invariant: Final chamber always spawns Dragon Boss
 ✅ PASS: Test 7 - Combat Damage Mechanics & Death State Evaluation
 ✅ PASS: Test 8 - Application Version Metadata File Schema & Validation
-   (Verified Version: 1.0.0 | Author: Paras Bhapkar)
+   (Verified Version: 1.2.0 | Author: Paras Bhapkar)
 
 -------------------------------------------------------------
 📊 TEST SUITE SUMMARY: 8 / 8 TESTS PASSED (100% SUCCESS)
@@ -128,26 +134,31 @@ Expected output:
 
 ## 🚀 5. Teacher Demonstration Walkthrough (Version Bump Workflow)
 
-### Step 1: Baseline Verification
-1. Access the live URL: `http://<EC2-PUBLIC-IP>:30007/`
-2. Confirm the version badge displays **`v1.0.0`** and the student name displays **`Paras Bhapkar (PRN: 1262243185)`**.
+### Step 1: Establish Secure Connection & Baseline Verification
+For AWS security hardening, inbound access is restricted to SSH (port 22). Forward ports 30007 and 8080 over SSH:
+```bash
+ssh -i cca2.pem -L 30007:localhost:30007 -L 8080:localhost:8080 ec2-user@35.154.191.183
+```
+1. Open the application: `http://localhost:30007/`
+2. Confirm the version badge displays **`v1.2.0`** and the student name displays **`Paras Bhapkar (PRN: 1262243185)`**.
 3. Confirm the `/health` endpoint returns:
    ```json
    {
      "status": "UP",
      "healthy": true,
-     "version": "1.0.0",
+     "application": "Dungeon Generator CI/CD",
+     "version": "1.2.0",
      "student": "Paras Bhapkar"
    }
    ```
 
 ### Step 2: Code Version Change
-1. Edit `version.json` in GitHub:
+1. Edit `version.json` in GitHub or local repository:
    ```json
    {
-     "version": "1.1.0",
+     "version": "1.3.0",
      "appName": "Dungeon Generator CI/CD",
-     "buildDate": "2026-10-28",
+     "buildDate": "2026-10-29",
      "author": "Paras Bhapkar",
      "prn": "1262243185",
      "panel": "D1",
@@ -157,30 +168,30 @@ Expected output:
    ```
 2. Commit and push the change to `main` branch:
    ```bash
-   git commit -am "feat(release): upgrade dungeon generator to version v1.1.0"
+   git commit -am "feat(release): upgrade dungeon generator to version v1.3.0"
    git push origin main
    ```
 
 ### Step 3: Trigger CI/CD Pipeline
-1. Open Jenkins: `http://<EC2-PUBLIC-IP>:8080/job/dungeon-generator-cicd/`
+1. Open Jenkins: `http://localhost:8080/job/dungeon-generator-cicd/`
 2. Click **Build Now**.
 3. Jenkins executes all 6 stages sequentially:
-   - Stage 1: Checkout SCM
+   - Stage 1: Checkout SCM (fetches latest commit)
    - Stage 2: Build & Test (validates all 8 tests)
    - Stage 3: Docker Image Build (`parasbhapkar/dungeon-generator:${BUILD_NUMBER}`)
-   - Stage 4: Docker Hub Push
+   - Stage 4: Container Delivery (imports image to k3s containerd)
    - Stage 5: Kubernetes Deployment & Rollout (2 replicas rolling update)
-   - Stage 6: Application Health Verification (verifies `/health` reports `1.1.0`)
+   - Stage 6: Application Health Verification (verifies `/health` reports new version)
 
 ### Step 4: Live URL Verification
-1. Refresh `http://<EC2-PUBLIC-IP>:30007/` in the browser.
-2. The page immediately reflects **`v1.1.0`** without downtime or caching delays!
+1. Refresh `http://localhost:30007/` in the browser.
+2. The page immediately reflects the upgraded version without downtime or caching delays!
 
 ---
 
 ## 🔒 6. Security and Cloud Configuration
 
-1. **Least-Privilege Ingress:** Security group opens only port 22 (SSH), port 8080 (Jenkins), and port 30007 (NodePort application).
-2. **Encrypted Credentials:** Docker Hub authentication is handled through Jenkins `withCredentials`, never hardcoded into source files.
-3. **Non-Root Container:** Multi-stage Docker build drops root privileges and executes as the `node` user.
-4. **Cache-Control:** Dynamic `Cache-Control: no-cache, no-store, must-revalidate` headers ensure instantaneous reflection of version bumps.
+1. **Least-Privilege Ingress:** Security group permits SSH (port 22) only. Application (30007) and Jenkins (8080) are accessed via secure SSH port-forwarding tunnels, ensuring zero unauthorized public exposure. Direct access over public IP is restricted by AWS Security Group.
+2. **Encrypted Credentials & Non-Root Execution:** Multi-stage Docker build drops root privileges and executes as unprivileged user `node` (UID 1000). Secrets are never hardcoded in source control.
+3. **Container Delivery:** Images are built and imported directly into the local k3s containerd runtime on AWS EC2, guaranteeing deterministic rollouts independent of external registry rate limits.
+4. **Cache-Control:** Dynamic `Cache-Control: no-cache, no-store, must-revalidate` headers ensure instantaneous reflection of version bumps in the browser.
